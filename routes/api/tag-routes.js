@@ -38,7 +38,7 @@ router.get('/:id', async (req, res) => {
 router.post('/', async (req, res) => {
   // create a new tag
   try {
-    const tagData = await Tag.create(tag_name, req.body.tag_name);
+    const tagData = await Tag.create({tag_name: req.body.tag_name});
     res.status(200).json(tagData);
   } catch (err) {
     res.status(400).json(err);
@@ -46,25 +46,16 @@ router.post('/', async (req, res) => {
 });
 
 
-// router.put('/:id', async (req, res) => {
-//   // update a tag's name by its `id` value
-//   try {
-//     const checkID = await Tag.findByPk(req.params.id)
-//     const updateTag = await Tag.update(req.body, {
-//       where: {
-//         id: req.params.id,
-//       },
-//     });
-//     if (!checkID) {
-//       res.status(404).json('No Tag found with this id!')
-//       return;
-//     }
-//     res.status(200).json('Tag has been updated')
-//   } catch (err) {
-//     res.status(500).json('Something went wrong', err)
-//   }
-  
-// });
+
+router.put('/:id', async (req, res) => {
+  const tagData = await Tag.update(req.body, {
+    where: {
+      id: req.params.id,
+    },
+  }).catch((err) => res.json(err));
+  res.json(tagData);
+});
+
 
 router.delete('/:id', async (req, res) => {
   // delete on tag by its `id` value
